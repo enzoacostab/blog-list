@@ -1,0 +1,29 @@
+h3.done{
+  color: green;  
+  border: solid green 1px;
+  width: 100%;
+  height: fit-content;
+  padding: 20px;
+}
+h3.err{
+  color: red;  
+  border: solid rgb(255, 0, 0) 1px;
+  width: 100%;
+  height: fit-content;
+  padding: 20px;
+}
+.blogList{
+  width: 50%;
+}
+.blog{
+  border: black 1px solid;
+  padding: 5px;
+}
+.row{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+p{
+  margin:5px
+}
