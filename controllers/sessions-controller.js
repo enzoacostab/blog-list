@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
     }
 
     if (alreadyLogged) {
-      throw new Error('user already logged')
+      res.json(alreadyLogged)
     }
 
     const userForToken = {

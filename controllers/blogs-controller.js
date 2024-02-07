@@ -92,14 +92,8 @@ export const updateBlog = async (req, res, next) => {
 
   try {
     const blog = await Blog.findByPk(id)
-
-    if (req.user.id !== blog.userId) {
-      return res.status(401).json({ error: 'authorization error' })
-    }
-
     blog.likes = likes
     blog.save()
-
     res.json(blog)
   } catch (error) {
     next(error)

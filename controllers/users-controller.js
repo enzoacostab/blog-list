@@ -63,6 +63,14 @@ export const createUser = async (req, res, next) => {
   const { name, username, password } = req.body
 
   try {
+    const checkUsername = await User.findOne({
+      where: {
+        username
+      }
+    })
+
+    if (checkUsername) throw new Error('username already exists')
+
     const passwordHash = await bcrypt.hash(password, 10)
     const user = await User.create({
       name,
