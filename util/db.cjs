@@ -1,11 +1,16 @@
 const { Sequelize } = require('sequelize')
-const { POSTGRES_USER, POSTGRES_DB, POSTGRES_PASS, POSTGRES_HOST } = require('./config.cjs')
+const { POSTGRES_USER, POSTGRES_URL, POSTGRES_DB, POSTGRES_PASS, POSTGRES_HOST } = require('./config.cjs')
 const { Umzug, SequelizeStorage } = require('umzug')
 
-const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASS, {
-  host: POSTGRES_HOST,
-  dialect: 'postgres'
-})
+let sequelize = null
+if (POSTGRES_URL) {
+  sequelize = new Sequelize(POSTGRES_URL)
+} else {
+  sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASS, {
+    host: POSTGRES_HOST,
+    dialect: 'postgres'
+  })
+}
 
 const connectToDatabase = async () => {
   try {
