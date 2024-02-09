@@ -31,7 +31,7 @@ const Blogs = ({ blogs, setBlogs, user, setUser, auth }) => {
   const { logout } = sessionsService
   const { like, create, remove }= blogService
   const navigate = useNavigate()
-
+  
   const handleLike = async (data) => {
     if (!user) return navigate('/login')
     try {
@@ -56,7 +56,7 @@ const Blogs = ({ blogs, setBlogs, user, setUser, auth }) => {
       setBlogs(blogs.filter(e => e.id !== id))
       toast({ description: <span>Blog removed!</span>, title: "Success" })
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
       toast({ description: err.message || 'Something went wrong...' })
     }
   }

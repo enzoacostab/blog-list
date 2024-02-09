@@ -8,7 +8,7 @@ import { toast } from './ui/use-toast'
 import { AlertCircle } from 'lucide-react'
 import { Button } from './ui/button'
 
-const Login = ({ setAuth, setUser, user }) => {
+const Login = ({ setAuth, user, setUserId }) => {
   const { login } = sessionsService
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,17 +18,17 @@ const Login = ({ setAuth, setUser, user }) => {
     if (user) {
       navigate('/')
     }
-  }, [user])
+  }, [user, navigate])
 
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const us = await login({ username, password })
+      const loggedUser = await login({ username, password })
       window.localStorage.setItem(
-        'loggedUser', JSON.stringify(us)
+        'loggedUser', JSON.stringify(loggedUser)
       )
-      setUser(us)
-      setAuth({ headers: { Authorization: `Bearer ${us.token}` } })
+      setUserId(loggedUser.id)
+      setAuth({ headers: { Authorization: `Bearer ${loggedUser.token}` } })
     } catch (err) {
       console.error(err.message);
       toast({
@@ -105,7 +105,7 @@ const Login = ({ setAuth, setUser, user }) => {
 
 Login.propTypes = {
   setAuth: propTypes.func.isRequired,
-  setUser: propTypes.func.isRequired,
+  setUserId: propTypes.func.isRequired,
   user: propTypes.object
 }
 

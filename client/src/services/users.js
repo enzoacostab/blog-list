@@ -1,8 +1,13 @@
 import axios from 'axios'
-const registerUrl = '/api/users'
+const baseUrl = '/api/users'
 
 const register = async (credentials) => {
-  await axios.post(registerUrl, credentials)
+  await axios.post(baseUrl, credentials)
 }
 
-export default { register }
+const getUser = async (auth, id) => {
+  const response = await axios.get(`${baseUrl}/${id}`, auth)
+  return response.data
+}
+
+export default { register, getUser }

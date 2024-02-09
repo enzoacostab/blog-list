@@ -89,6 +89,23 @@ export const deleteBlog = async (req, res, next) => {
       return res.status(401).json({ error: 'authorization error' })
     }
 
+    const users = await User.findAll({
+      attributes: ['likes', 'id']
+    })
+
+    for (const user of users) {
+      const { likes } = user
+
+      if (likes && likes.includes(id)) {
+        const updatedLikes = likes.filter(blogId => blogId !== parseInt(id))
+        await User.update({ likes: updatedLikes }, {
+          where: {
+            id: user.id
+          }
+        })
+      }
+    }
+
     await Blog.destroy({
       where: {
         id

@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
     }
 
     if (alreadyLogged) {
-      res.json(alreadyLogged)
+      res.json({ id: alreadyLogged.userId, token: alreadyLogged.token })
     }
 
     const userForToken = {
@@ -52,7 +52,7 @@ export const login = async (req, res, next) => {
       userId: user.id
     })
 
-    res.json({ token, username, id: user.id, likes: user.likes })
+    res.json({ token, id: user.id })
   } catch (error) {
     next(error)
   }
