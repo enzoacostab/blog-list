@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import propTypes from 'prop-types'
 import Blog from './Blog'
 import sessionsService from '../services/sessions'
 import blogService from '../services/blogs'
-import { useNavigate } from 'react-router-dom'
 import {
   Accordion,
   AccordionContent,
@@ -20,20 +19,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from './ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Star } from 'lucide-react'
+import { Star, User } from 'lucide-react'
 import CreateBlog from './CreateBlog'
+import { DeleteButton } from './DeleteButton'
 
-const Blogs = ({ blogs, setBlogs, user, message, setMessage, children, auth, messageElement }) => {
+const Blogs = ({ blogs, setBlogs, user, message, setMessage, auth, messageElement }) => {
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
   const [id, setId] = useState('')
   const { logout } = sessionsService
-  const navigate = useNavigate()
-  
-  /*useEffect(() => {
-    if (!user) {
-      navigate('/login')
-    }
-  }, [user])*/
 
   const like = async (data) => {
     try {
@@ -107,13 +100,13 @@ const Blogs = ({ blogs, setBlogs, user, message, setMessage, children, auth, mes
       <header className='pb-5 flex justify-end'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="bg-gray-200">
-              <AvatarFallback>X</AvatarFallback>
+            <Avatar>
+              <AvatarFallback><User/></AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="bg-black border-gray-600">
+          <DropdownMenuContent>
             <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-gray-600"/>
+            <DropdownMenuSeparator/>
             <DropdownMenuItem onClick={() => setCreateBlogVisible(true)}>Add Blog</DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
@@ -128,14 +121,14 @@ const Blogs = ({ blogs, setBlogs, user, message, setMessage, children, auth, mes
                   <AccordionTrigger>
                     <Blog blog={blog}/>
                   </AccordionTrigger>
-                  <AccordionContent className="">
+                  <AccordionContent>
                     <div>
                       <p>{blog.url}</p>
-                        <div className='flex gap-2 items-center w-full'>
+                        <div className='flex items-center justify-between w-full'>
                           <p>{blog.likes}</p>
                           {blog.user.username === user.username 
-                            ? <Button className="bg-transparent ml-auto border px-3 py-1 h-fit border-gray-600" onClick={() => { window.confirm('are you sure?') && remove(blog.id) }}>Delete</Button> 
-                            : <button onClick={() => like(blog)}><Star size={20}/></button>}
+                            ? <DeleteButton remove={remove} id={blog.id}/> 
+                            : <Button variant="ghost" size="icon" onClick={() => like(blog)}><Star size={20}/></Button>}
                         </div>
                     </div>
                   </AccordionContent>
@@ -158,7 +151,6 @@ Blogs.propTypes = {
   user: propTypes.object,
   message: propTypes.string.isRequired,
   setMessage: propTypes.func.isRequired,
-  children: propTypes.element.isRequired,
   messageElement: propTypes.object,
   auth: propTypes.object
 }

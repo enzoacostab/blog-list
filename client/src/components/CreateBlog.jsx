@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import propTypes from 'prop-types'
 import { Button } from './ui/button'
+import { Input } from './ui/input'
 
 const CreateBlog = ({ createBlog, setCreateBlogVisible }) => {
   const [title, setTitle] = useState('')
@@ -25,14 +26,14 @@ const CreateBlog = ({ createBlog, setCreateBlogVisible }) => {
   return (
     <div className='flex flex-col items-center w-fit'>
       <h2>Add Blog</h2>
-      <form onSubmit = { addBlog } className='text-black '>
-        <input id='title' type='text' placeholder='title' value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
-        <input id='author' type='text' placeholder='author' value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
-        <input id='url' type='text' placeholder='url' value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
-        <input id='year' type='number' placeholder='year' value={year} onChange={({ target }) => setYear(target.value)}/><br/>
-        <div className='flex justify-evenly mt-4'>
-          <Button className="bg-transparent w-auto border px-3 py-1 h-fit border-gray-600" type="submit">Create</Button>
-          <Button onClick={handleCancel} className="bg-transparent border px-3 py-1 h-fit border-gray-600">Cancel</Button> 
+      <form onSubmit = { addBlog } className='flex flex-col gap-2 mt-2'>
+        <Input id='title' type='text' placeholder='title' value={title} onChange={({ target }) => setTitle(target.value)}/>
+        <Input id='author' type='text' placeholder='author' value={author} onChange={({ target }) => setAuthor(target.value)}/>
+        <Input id='url' type='text' placeholder='url' value={url} onChange={({ target }) => setUrl(target.value)}/>
+        <Input id='year' type='number' placeholder='year' value={year} onChange={({ target }) => setYear(target.value)}/>
+        <div className='flex justify-evenly'>
+          <Button variant="secondary" type="submit">Create</Button>
+          <Button variant="secondary" onClick={handleCancel} className="">Cancel</Button> 
         </div>
       </form>
     </div>
