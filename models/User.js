@@ -30,6 +30,9 @@ const User = sequelize.define('users', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
+  likes: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER)
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,

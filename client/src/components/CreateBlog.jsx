@@ -9,9 +9,9 @@ const CreateBlog = ({ createBlog, setCreateBlogVisible }) => {
   const [url, setUrl] = useState('')
   const [year, setYear] = useState(1991)
 
-  const addBlog = () => {
-    const data = { title, author, url, year }
-    createBlog(data)
+  const addBlog = (e) => {
+    e.preventDefault()
+    createBlog({ title, author, url, year })
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -26,7 +26,7 @@ const CreateBlog = ({ createBlog, setCreateBlogVisible }) => {
   return (
     <div className='flex flex-col items-center w-fit'>
       <h2>Add Blog</h2>
-      <form onSubmit = { addBlog } className='flex flex-col gap-2 mt-2'>
+      <form onSubmit={addBlog} className='flex flex-col gap-2 mt-2'>
         <Input id='title' type='text' placeholder='title' value={title} onChange={({ target }) => setTitle(target.value)}/>
         <Input id='author' type='text' placeholder='author' value={author} onChange={({ target }) => setAuthor(target.value)}/>
         <Input id='url' type='text' placeholder='url' value={url} onChange={({ target }) => setUrl(target.value)}/>

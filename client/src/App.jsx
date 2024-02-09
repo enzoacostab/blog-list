@@ -1,32 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import blogService from './services/blogs'
 import './App.css'
 import './index.css'
-import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Register from './components/Register'
 import { ThemeProvider } from './components/ThemeProvider'
+import { Toaster } from './components/ui/toaster'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState('')
   const [auth, setAuth] = useState(null)
-  const messageElement = document.getElementById('message')
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (auth) {
-      blogService.getAll(auth).then(blogs =>
-        setBlogs(blogs)
-      )
-      navigate('/')
-    } else {
-      navigate('/login')
-    }
-  }, [auth])
   
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -41,20 +27,26 @@ const App = () => {
     }
   }, [])
 
+  useEffect(() => {
+    blogService.getAll()
+      .then(blogs => setBlogs(blogs))
+    
+  }, [auth])
   
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Routes>
           <Route path='/' element={
-            <Blogs message={message} setBlogs={setBlogs} user={user} setMessage={setMessage} blogs={blogs} auth={auth} messageElement={messageElement}/>
+            <Blogs setBlogs={setBlogs} setUser={setUser} user={user} blogs={blogs} auth={auth}/>
           }/>
           <Route path='/login' element={
-            <Login message={message} setMessage={setMessage} user={user} setAuth={setAuth} setUser={setUser}/>
+            <Login user={user} setAuth={setAuth} setUser={setUser}/>
           }/>
           <Route path='/register' element={
-            <Register message={message} setMessage={setMessage} user={user}/>
+            <Register/>
           }/>
         </Routes>
+        <Toaster/>
     </ThemeProvider>
   )
 }

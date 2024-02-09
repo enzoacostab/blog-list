@@ -36,6 +36,6 @@ export function DeleteButton({ remove, id }) {
 }
 DeleteButton.propTypes = {
   remove: propTypes.func.isRequired,
-  id: propTypes.string.isRequired
+  id: propTypes.number.isRequired
 }
 

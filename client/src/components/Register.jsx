@@ -1,38 +1,41 @@
 import propTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import usersService from '../services/users'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
+import { toast } from './ui/use-toast'
+import { AlertCircle } from 'lucide-react'
+import { Button } from './ui/button'
 
-const Register = ({ message, setMessage, user }) => {
+const Register = ({ user }) => {
   const { register } = usersService
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const messageElement = document.getElementById('message')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      navigate('/')
+    }
+  }, [user])
 
   const handleRegister = async (e) => {
     e.preventDefault()
     try {
       await register({ username, password, name })
-      setUsername('')
-      setPassword('')
-      setName('')
-      messageElement.classList.add('done')
-      setMessage('Registered Successfully')
-      setTimeout(() => {
-        messageElement.classList.remove('done')
-        setMessage('')
-      }, 5000)
+      toast({ description: <span>Registration successful!</span>, title: 'Success' })
+      navigate('/login')
     } catch (err) {
-      console.log(err);
-      messageElement.classList.add('err')
-      setMessage('wrong username or password')
-      setTimeout(() => {
-        messageElement.classList.remove('err')
-        setMessage('')
-      }, 5000)
+      console.error(err);
+      toast({
+        description: 
+          <div className='flex gap-6 items-center'>
+            <AlertCircle/>
+            <p>{err.response?.data?.error || 'An error occurred while registering.'}</p>
+          </div>
+      })
     }
   }
 
@@ -97,12 +100,9 @@ const Register = ({ message, setMessage, user }) => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
+            <Button type="submit" className="w-full">
               Register
-            </button>
+            </Button>
           </div>
         </form>
 
@@ -118,9 +118,7 @@ const Register = ({ message, setMessage, user }) => {
 }
 
 Register.propTypes = {
-  message: propTypes.string.isRequired,
-  user: propTypes.object,
-  setMessage: propTypes.func.isRequired,
+  user: propTypes.object
 }
 
 export default Register

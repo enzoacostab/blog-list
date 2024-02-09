@@ -52,7 +52,7 @@ export const login = async (req, res, next) => {
       userId: user.id
     })
 
-    res.json({ token, username, id: user.id })
+    res.json({ token, username, id: user.id, likes: user.likes })
   } catch (error) {
     next(error)
   }

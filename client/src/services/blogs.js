@@ -1,36 +1,20 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
-const getAll = async (auth) => {
-  try {
-    const request = await axios.get(baseUrl, auth)
-    return request.data
-  } catch (error) {
-    console.error(error)
-  }
+const getAll = async () => {
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 const create = async (data, auth) => {
-  try {
-    const request = await axios.post(baseUrl, data, auth)
-    return request.data
-  } catch (error) {
-    console.error(error)
-  }
+  const response = await axios.post(baseUrl, data, auth)
+  return response.data
 }
 const like = async (data, auth) => {
-  try {
-    const request = await axios.put(`${baseUrl}/${data.id}`, data, auth)
-    return request.data
-  } catch (error) {
-    console.error(error)
-  }
+  const response = await axios.put(`${baseUrl}/${data.id}`, data, auth)
+  return response.data
 }
 const remove = async (id, auth) => {
-  try {
-    return await axios.delete(`${baseUrl}/${id}`, auth)
-  } catch (error) {
-    console.error(error)
-  }
+  await axios.delete(`${baseUrl}/${id}`, auth)
 }
 
 export default { getAll, create, like, remove }

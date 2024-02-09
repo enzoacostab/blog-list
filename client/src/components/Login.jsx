@@ -1,15 +1,24 @@
 import propTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import sessionsService from '../services/sessions'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
+import { toast } from './ui/use-toast'
+import { AlertCircle } from 'lucide-react'
+import { Button } from './ui/button'
 
-const Login = ({ message, setMessage, setAuth, setUser, user }) => {
+const Login = ({ setAuth, setUser, user }) => {
   const { login } = sessionsService
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const messageElement = document.getElementById('message')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      navigate('/')
+    }
+  }, [user])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -20,15 +29,15 @@ const Login = ({ message, setMessage, setAuth, setUser, user }) => {
       )
       setUser(us)
       setAuth({ headers: { Authorization: `Bearer ${us.token}` } })
-      setUsername('')
-      setPassword('')
     } catch (err) {
-      messageElement.classList.add('err')
-      setMessage('wrong username or password')
-      setTimeout(() => {
-        messageElement.classList.remove('err')
-        setMessage('')
-      }, 5000)
+      console.error(err.message);
+      toast({
+        description: 
+          <div className='flex gap-6 items-center'>
+            <AlertCircle/>
+            <p>{err.response?.data?.error || 'An error occurred while logging in.'}</p>
+          </div>
+      })
     }
   }
 
@@ -77,19 +86,16 @@ const Login = ({ message, setMessage, setAuth, setUser, user }) => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
+            <Button type="submit" className="w-full">
               Sign in
-            </button>
+            </Button>
           </div>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{' '}
           <Link to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-            Register
+            Sign up
           </Link>
         </p>
       </div>
@@ -98,11 +104,9 @@ const Login = ({ message, setMessage, setAuth, setUser, user }) => {
 }
 
 Login.propTypes = {
-  message: propTypes.string.isRequired,
-  user: propTypes.object,
-  setMessage: propTypes.func.isRequired,
   setAuth: propTypes.func.isRequired,
-  setUser: propTypes.func.isRequired
+  setUser: propTypes.func.isRequired,
+  user: propTypes.object
 }
 
 export default Login

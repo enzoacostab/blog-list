@@ -14,9 +14,9 @@ app.use(express.static('client/dist'))
 app.use(sessionsRouter)
 app.use(usersRouter)
 app.get('/api/authors', getAuthors)
+app.use(blogsRouter)
 app.use(userExtractor)
 app.use(readingListsRouter)
-app.use(blogsRouter)
 app.use(errorHandler)
 
 export default app

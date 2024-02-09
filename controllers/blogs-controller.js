@@ -58,7 +58,22 @@ export const createBlog = async (req, res, next) => {
       year
     })
 
-    res.json(newBlog)
+    const blogWithUser = await Blog.findByPk(newBlog.id, {
+      attributes: { exclude: ['userId'] },
+      include: [{
+        model: User,
+        attributes: ['username']
+      }, {
+        model: User,
+        as: 'readings',
+        attributes: ['id', 'username'],
+        through: {
+          attributes: []
+        }
+      }]
+    })
+
+    res.json(blogWithUser)
   } catch (error) {
     next(error)
   }
@@ -89,11 +104,40 @@ export const deleteBlog = async (req, res, next) => {
 export const updateBlog = async (req, res, next) => {
   const { id } = req.params
   const { likes } = req.body
+  const userId = req.user.id
 
   try {
-    const blog = await Blog.findByPk(id)
-    blog.likes = likes
-    blog.save()
+    const user = await User.findByPk(userId)
+    const blog = await Blog.findByPk(id, {
+      attributes: { exclude: ['userId'] },
+      include: [{
+        model: User,
+        attributes: ['username']
+      }, {
+        model: User,
+        as: 'readings',
+        attributes: ['id', 'username'],
+        through: {
+          attributes: []
+        }
+      }]
+    })
+
+    if (user.likes) {
+      if (user.likes.includes(parseInt(id))) {
+        blog.likes = likes - 1
+        user.likes = user.likes.filter(blogId => blogId !== parseInt(id))
+      } else {
+        blog.likes = likes + 1
+        user.likes = [...user.likes, parseInt(id)]
+      }
+    } else {
+      blog.likes = likes + 1
+      user.likes = [parseInt(id)]
+    }
+
+    await blog.save()
+    await user.save()
     res.json(blog)
   } catch (error) {
     next(error)
