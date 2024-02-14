@@ -1,10 +1,11 @@
 import propTypes from 'prop-types'
 import React from 'react'
 
-const Blog = ({ blog }) => {
+export default function Blog({ blog }) {
   return (
-    <div>
-      {blog.title} {blog.author} {blog.year}
+    <div className='text-left'>
+      <h2 className='font-bold'>{blog.title}</h2> 
+      <em className='font-light text-sm'>{blog.author} {blog.year && blog.author && "·"} {blog.year}</em>
     </div>
   )
 }
@@ -12,5 +13,3 @@ const Blog = ({ blog }) => {
 Blog.propTypes = {
   blog: propTypes.object.isRequired
 }
-
-export default Blog

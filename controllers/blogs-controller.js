@@ -50,6 +50,16 @@ export const createBlog = async (req, res, next) => {
 
   try {
     const user = req.user
+
+    if (!title || !url) {
+      throw new Error('Missing fields')
+    }
+
+    const checkUrl = new URL(url)
+    if (!checkUrl) {
+      throw new Error('Invalid url')
+    }
+
     const newBlog = await Blog.create({
       userId: user.id,
       title,

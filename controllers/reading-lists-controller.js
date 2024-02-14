@@ -2,27 +2,33 @@ import ReadingList from '../models/ReadingList.js'
 
 export const addBlog = async (req, res, next) => {
   try {
-    const blogId = req.body.id
+    const { id } = req.body
     const userId = req.user.id
     const isInReadingList = await ReadingList.findOne({
       where: {
         userId,
-        blogId
+        blogId: id
       }
     })
 
     if (isInReadingList) {
-      throw new Error('The blog already exists in the reading list')
+      await ReadingList.destroy({
+        where: {
+          userId,
+          blogId: id
+        }
+      })
+      return res.sendStatus(204)
     }
 
     const blog = {
       read: false,
       userId,
-      blogId
+      blogId: id
     }
 
-    await ReadingList.create(blog)
-    res.json(blog)
+    const response = await ReadingList.create(blog)
+    res.json({ read: false, id: response.id })
   } catch (error) {
     next(error)
   }

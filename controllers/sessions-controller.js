@@ -29,12 +29,12 @@ export const login = async (req, res, next) => {
 
     if (!user || !passwordCorrect) {
       return res.status(401).json({
-        error: 'The username or password is incorrect'
+        error: 'The email or password is incorrect'
       })
     }
 
     if (user.disabled) {
-      throw new Error('account disabled, please contact admin')
+      throw new Error('Account disabled, please contact admin')
     }
 
     if (alreadyLogged) {

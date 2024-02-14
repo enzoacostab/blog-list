@@ -63,7 +63,7 @@ ActiveSession.belongsTo(User, {
   sourceKey: 'id'
 })
 
-User.belongsToMany(Blog, { through: ReadingList, as: 'readings' })
-Blog.belongsToMany(User, { through: ReadingList, as: 'readings' })
+User.belongsToMany(Blog, { through: ReadingList, as: 'readings', onDelete: 'CASCADE' })
+Blog.belongsToMany(User, { through: ReadingList, as: 'readings', onDelete: 'CASCADE' })
 
 export default User

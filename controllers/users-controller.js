@@ -69,7 +69,7 @@ export const createUser = async (req, res, next) => {
       }
     })
 
-    if (checkUsername) throw new Error('username already exists')
+    if (checkUsername) throw new Error('An account with this email already exists')
 
     const passwordHash = await bcrypt.hash(password, 10)
     const user = await User.create({

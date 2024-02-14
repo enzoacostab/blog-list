@@ -19,7 +19,9 @@ const ReadingList = sequelize.define('reading_lists', {
   blogId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: { model: 'blogs', key: 'id' }
+    references: { model: 'blogs', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
   }
 }, { timestamps: false })
 

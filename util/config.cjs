@@ -7,5 +7,6 @@ module.exports = {
   POSTGRES_PASS: process.env.POSTGRES_PASS,
   POSTGRES_HOST: process.env.POSTGRES_HOST,
   PORT: process.env.PORT,
-  SECRET: process.env.SECRET
+  SECRET: process.env.SECRET,
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173'
 }

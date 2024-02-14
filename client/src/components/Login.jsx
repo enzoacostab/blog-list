@@ -1,5 +1,4 @@
-import propTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import sessionsService from '../services/sessions'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
@@ -7,8 +6,10 @@ import { Label } from './ui/label'
 import { toast } from './ui/use-toast'
 import { AlertCircle } from 'lucide-react'
 import { Button } from './ui/button'
+import { context } from '@/context/context'
 
-const Login = ({ setAuth, user, setUserId }) => {
+export default function Login() {
+  const { setAuth, user, setUserId } = useContext(context)
   const { login } = sessionsService
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -44,7 +45,7 @@ const Login = ({ setAuth, user, setUserId }) => {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-100">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account
         </h2>
       </div>
@@ -52,7 +53,7 @@ const Login = ({ setAuth, user, setUserId }) => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleLogin} className="space-y-6" action="#" method="POST">
           <div>
-            <Label htmlFor="email">
+            <Label htmlFor="email" className="text-gray-500 dark:text-gray-400">
               Email address
             </Label>
             <div className="mt-2">
@@ -69,7 +70,7 @@ const Login = ({ setAuth, user, setUserId }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">
+              <Label htmlFor="password" className="text-gray-500 dark:text-gray-400">
                 Password
               </Label>
             </div>
@@ -93,8 +94,8 @@ const Login = ({ setAuth, user, setUserId }) => {
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{' '}
-          <Link to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          Not a member?
+          <Link to="/register" className="font-semibold ml-1 leading-6 text-indigo-600 hover:text-indigo-500">
             Sign up
           </Link>
         </p>
@@ -102,11 +103,3 @@ const Login = ({ setAuth, user, setUserId }) => {
     </div>
   )
 }
-
-Login.propTypes = {
-  setAuth: propTypes.func.isRequired,
-  setUserId: propTypes.func.isRequired,
-  user: propTypes.object
-}
-
-export default Login

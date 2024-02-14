@@ -1,5 +1,4 @@
-import propTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import usersService from '../services/users'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
@@ -7,8 +6,10 @@ import { Label } from './ui/label'
 import { toast } from './ui/use-toast'
 import { AlertCircle } from 'lucide-react'
 import { Button } from './ui/button'
+import { context } from '@/context/context'
 
-const Register = ({ user }) => {
+const Register = () => {
+  const { user } = useContext(context)
   const { register } = usersService
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
@@ -50,7 +51,7 @@ const Register = ({ user }) => {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleRegister} className="space-y-6" action="#" method="POST">
           <div>
-            <Label htmlFor="email">
+            <Label htmlFor="email" className="text-gray-500 dark:text-gray-400">
               Email address
             </Label>
             <div className="mt-2">
@@ -66,7 +67,7 @@ const Register = ({ user }) => {
           </div>
 
           <div>
-            <Label htmlFor="email">
+            <Label htmlFor="email" className="text-gray-500 dark:text-gray-400">
               Name
             </Label>
             <div className="mt-2">
@@ -83,7 +84,7 @@ const Register = ({ user }) => {
 
           <div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">
+              <Label htmlFor="password" className="text-gray-500 dark:text-gray-400">
                 Password
               </Label>
             </div>
@@ -107,18 +108,14 @@ const Register = ({ user }) => {
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Are you already a member?{' '}
-          <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          Are you already a member?
+          <Link to="/login" className="font-semibold leading-6 ml-1 text-indigo-600 hover:text-indigo-500">
             Sign in
           </Link>
         </p>
       </div>
     </div>
   )
-}
-
-Register.propTypes = {
-  user: propTypes.object
 }
 
 export default Register
