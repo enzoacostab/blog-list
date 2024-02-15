@@ -19,7 +19,7 @@ export function ModeToggle() {
           <span className="ml-2">Theme</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent>
+        <DropdownMenuSubContent className="scale-150 mr-8 sm:m-0 sm:scale-100">
           <DropdownMenuItem onClick={() => setTheme("light")}>
             Light
           </DropdownMenuItem>

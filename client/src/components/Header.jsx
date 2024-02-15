@@ -34,7 +34,7 @@ export default function Header() {
               <AvatarFallback><User/></AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className={`mr-10 ${user ? "mt-14" : "mt-3"} scale-150 sm:scale-100 sm:m-0`}>
             {user
               ? <>
                   <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
