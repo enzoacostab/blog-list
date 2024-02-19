@@ -1,23 +1,24 @@
-import React, { useEffect, useContext } from 'react'
-import Blogs from './components/Blogs'
-import Login from './components/Login'
+import React, { useEffect, useContext, Suspense, lazy } from 'react'
 import blogService from './services/blogs'
-import './App.css'
-import './index.css'
+import readingListService from './services/reading-lists'
+import userService from '@/services/users'
+import Loader from './components/Loader'
 import { Route, Routes, useNavigate } from 'react-router-dom'
-import Register from './components/Register'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from './components/ui/toaster'
-import userService from '@/services/users'
-import ReadingList from './components/ReadingList'
 import { context } from './context/context'
-import Header from './components/Header'
-import CreateBlog from './components/CreateBlog'
-import readingListService from './services/reading-lists'
 import { toast } from './components/ui/use-toast'
 import './services/index'
+import './App.css'
+import './index.css'
+const Register = lazy(() => import('./components/Register'))
+const Login = lazy(() => import('./components/Login'))
+const Header = lazy(() => import('./components/Header'))
+const ReadingList = lazy(() => import('./components/ReadingList'))
+const CreateBlog = lazy(() => import('./components/CreateBlog'))
+const Blogs = lazy(() => import('./components/Blogs'))
 
-const App = () => {
+export default function App() {
   const { setBlogs, auth, setUserId, setAuth, userId, setUser, user, blogs } = useContext(context)
   const navigate = useNavigate()
   const { like, remove } = blogService
@@ -40,7 +41,7 @@ const App = () => {
         .then(blogs => setBlogs(blogs))
     }
 
-    if (auth, userId) {
+    if (auth && userId) {
       userService.getUser(auth, userId)
         .then(user => setUser(user))
     }
@@ -108,6 +109,7 @@ const App = () => {
   
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
@@ -117,9 +119,8 @@ const App = () => {
             <Route path='/add-blog' element={<CreateBlog/>}/>
           </Route>
         </Routes>
-        <Toaster/>
+      </Suspense>
+      <Toaster/>
     </ThemeProvider>
   )
 }
-
-export default App

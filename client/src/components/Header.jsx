@@ -11,18 +11,32 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { context } from '@/context/context'
 import sessionService from '@/services/sessions'
-import { User, LogOut, Bookmark, Home, Plus, LogIn } from 'lucide-react'
+import { User, LogOut, Bookmark, Home, Plus, LogIn, AlertCircle } from 'lucide-react'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { toast } from './ui/use-toast'
 
 export default function Header() {
-  const { user, auth } = useContext(context)
+  const { user, auth, setUser, setAuth } = useContext(context)
   const { logout } = sessionService
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    await logout(auth)
-    window.localStorage.clear()
-    window.location.reload()
+    try {
+      await logout(auth)
+      window.localStorage.clear()
+      setUser(null)
+      setAuth(null)
+      navigate('/')
+    } catch (err) {
+      console.error(err.message);
+      toast({
+        description: 
+          <div className='flex gap-6 items-center'>
+            <AlertCircle/>
+            <p>{err.response?.data?.error || 'An error occurred while signing out.'}</p>
+          </div>
+      })
+    }
   }
 
   return (

@@ -8,7 +8,8 @@ const login = async (credentials) => {
 }
 
 const logout = async (auth) => {
-  await axios.delete(logoutUrl, auth)
+  const response = await axios.delete(logoutUrl, auth)
+  return response.data
 }
 
 export default { login, logout }
