@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { toast } from './ui/use-toast'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { Button } from './ui/button'
 import { context } from '@/context/context'
 
@@ -21,8 +21,10 @@ export default function Login() {
     }
   }, [user, navigate])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    e.target.login.disabled = true
+
     try {
       const loggedUser = await login({ username, password })
       window.localStorage.setItem(
@@ -38,7 +40,9 @@ export default function Login() {
             <AlertCircle/>
             <p>{err.response?.data?.error || 'An error occurred while logging in.'}</p>
           </div>
-      })
+      }) 
+    } finally {
+      e.target.login.disabled = false
     }
   }
 
@@ -87,8 +91,9 @@ export default function Login() {
           </div>
 
           <div>
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button type="submit" name="login" className="w-full *:disabled:size-4">
+              <Loader2 className='animate-spin bg-transparent size-0 mr-2 transition-all'/>
+              Log in
             </Button>
           </div>
         </form>

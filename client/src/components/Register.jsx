@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { toast } from './ui/use-toast'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { Button } from './ui/button'
 import { context } from '@/context/context'
 
@@ -24,6 +24,8 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault()
+    e.target.register.disabled = true
+
     try {
       await register({ username, password, name })
       toast({ description: <span>Registration successful!</span>, title: 'Success' })
@@ -37,6 +39,8 @@ const Register = () => {
             <p>{err.response?.data?.error || 'An error occurred while registering.'}</p>
           </div>
       })
+    } finally {
+      e.target.register.disabled = false
     }
   }
 
@@ -101,8 +105,9 @@ const Register = () => {
           </div>
 
           <div>
-            <Button type="submit" className="w-full">
-              Register
+            <Button type="submit" name="register" className="w-full *:disabled:size-4">
+              <Loader2 className='animate-spin bg-transparent size-0 mr-2 transition-all'/>
+              Sign up
             </Button>
           </div>
         </form>
@@ -110,7 +115,7 @@ const Register = () => {
         <p className="mt-10 text-center text-sm text-gray-500">
           Are you already a member?
           <Link to="/login" className="font-semibold leading-6 ml-1 text-indigo-600 hover:text-indigo-500">
-            Sign in
+            Log in
           </Link>
         </p>
       </div>
