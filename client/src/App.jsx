@@ -45,7 +45,7 @@ export default function App() {
       userService.getUser(auth, userId)
         .then(user => setUser(user))
     }
-  }, [auth, userId, blogs])
+  }, [auth, userId, blogs, setUserId, setAuth, setBlogs, setUser])
 
   const handleLike = async (data) => {
     if (!user) return navigate('/login')
@@ -107,20 +107,24 @@ export default function App() {
     }
   }
   
-  return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Suspense fallback={<Loader/>}>
-        <Routes>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/register' element={<Register/>}/>
-          <Route path='/' element={<Header/>}>
-            <Route path='/reading-list' element={<ReadingList handleAddToReadingList={handleAddToReadingList} handleLike={handleLike} handleRemove={handleRemove}/>} />
-            <Route path='/' element={<Blogs handleAddToReadingList={handleAddToReadingList} handleLike={handleLike} handleRemove={handleRemove}/>}/>
-            <Route path='/add-blog' element={<CreateBlog/>}/>
-          </Route>
-        </Routes>
-      </Suspense>
-      <Toaster/>
-    </ThemeProvider>
-  )
+  if (!blogs) {
+    return <Loader/>
+  } else {
+    return (
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Suspense fallback={<Loader/>}>
+          <Routes>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/register' element={<Register/>}/>
+            <Route path='/' element={<Header/>}>
+              <Route path='/reading-list' element={<ReadingList handleAddToReadingList={handleAddToReadingList} handleLike={handleLike} handleRemove={handleRemove}/>} />
+              <Route path='/' element={<Blogs handleAddToReadingList={handleAddToReadingList} handleLike={handleLike} handleRemove={handleRemove}/>}/>
+              <Route path='/add-blog' element={<CreateBlog/>}/>
+            </Route>
+          </Routes>
+        </Suspense>
+        <Toaster/>
+      </ThemeProvider>
+    )
+  }
 }
