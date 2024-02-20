@@ -20,7 +20,7 @@ const Register = () => {
     if (user) {
       navigate('/')
     }
-  }, [user])
+  }, [navigate, user])
 
   const handleRegister = async (e) => {
     e.preventDefault()

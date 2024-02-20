@@ -4,9 +4,9 @@ import ContextProvider from './context/context-provider'
 import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ContextProvider>
-    <Router>
+  <Router>
+    <ContextProvider>
       <App/>
-    </Router>
-  </ContextProvider>
+    </ContextProvider>
+  </Router>
 )

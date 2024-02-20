@@ -19,6 +19,7 @@ export default function CreateBlog() {
     e.preventDefault()
     if (!user) return navigate('/login')
     try {
+      e.target.submit.disabled = true
       const newBlog = await create({ title, author, url, year }, auth)
       setBlogs(blogs => blogs.concat(newBlog))
       toast({ description: 'Blog added!', title: 'Success'})
@@ -26,11 +27,6 @@ export default function CreateBlog() {
     } catch (err) {
       console.error(err);
       toast({ description: err.message || 'Something went wrong...' })
-    } finally {
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setYear(1991)
     }
   }
 
@@ -48,7 +44,7 @@ export default function CreateBlog() {
         <Input id='url' type='url' required placeholder='url' value={url} onChange={({ target }) => setUrl(target.value)}/>
         <Input id='year' type='number' placeholder='year' value={year} onChange={({ target }) => setYear(target.value)}/>
         <div className='flex justify-center gap-4'>
-          <Button variant="secondary" type="submit">Create</Button>
+          <Button variant="secondary" name="submit" type="submit">Create</Button>
           <Button variant="secondary" onClick={handleCancel} className="">Cancel</Button> 
         </div>
       </form>

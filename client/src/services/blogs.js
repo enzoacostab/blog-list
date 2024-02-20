@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
-const getAll = async () => {
+const getBlogs = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
@@ -17,4 +17,4 @@ const remove = async (id, auth) => {
   await axios.delete(`${baseUrl}/${id}`, auth)
 }
 
-export default { getAll, create, like, remove }
+export default { getBlogs, create, like, remove }
