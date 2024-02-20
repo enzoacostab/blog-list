@@ -53,14 +53,14 @@ export default function Header() {
               ? <>
                   <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
                   <DropdownMenuSeparator/>
-                  <DropdownMenuItem onClick={() => navigate('/')}><Home size={15} className='mr-2'/>Home</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/reading-list')}><Bookmark size={15} className='mr-2'/>Reading list</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/add-blog')}><Plus size={15} className='mr-2'/>Add blog</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/')}><Home size={16} className='mr-2'/>Home</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/reading-list')}><Bookmark size={16} className='mr-2'/>Reading list</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/add-blog')}><Plus size={16} className='mr-2'/>Add blog</DropdownMenuItem>
                   <ModeToggle/>
                   <DropdownMenuSeparator/>
-                  <DropdownMenuItem onClick={handleLogout}><LogOut size={15} className='mr-2'/>Log out</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}><LogOut size={16} className='mr-2'/>Log out</DropdownMenuItem>
                 </>
-              : <DropdownMenuItem onClick={() => navigate('/login')}><LogIn size={15} className='mr-2'/>Sign in</DropdownMenuItem>}
+              : <DropdownMenuItem onClick={() => navigate('/login')}><LogIn size={16} className='mr-2'/>Sign in</DropdownMenuItem>}
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
